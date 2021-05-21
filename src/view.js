@@ -11,17 +11,29 @@ const renderXmlData = (xml, elements) => {
   p.textContent = xml;
 };
 
-const renderError = (error, elements) => {
+const renderAppError = (error, elements) => {
   if (!error) {
     elements.feedback.textContent = '';
   }
   elements.feedback.textContent = error;
 };
 
+const renderFormError = (rssForm, elements) => {
+  if (rssForm.valid) {
+    elements.input.classList.remove('danger-text');
+    elements.input.classList.remove('is-invalid');
+  } else {
+    elements.input.classList.add('is-invalid');
+    elements.feedback.classList.add('text-danger');
+    elements.feedback.textContent = rssForm.error;
+  }
+};
+
 const initview = (state, elements) => {
   const mapping = {
     xmlData: () => renderXmlData(state.xmlData, elements),
-    error: () => renderError(state.error, elements),
+    error: () => renderAppError(state.error, elements),
+    'form.rssForm': () => renderFormError(state.form.rssForm, elements),
   };
 
   const watchedState = onChange(state, (path) => {

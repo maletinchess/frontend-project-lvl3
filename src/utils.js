@@ -1,4 +1,19 @@
 import axios from 'axios';
+import * as yup from 'yup';
+
+export const validate = (url) => {
+  const schema = yup
+    .string()
+    .trim()
+    .url()
+    .matches(/rss/);
+  try {
+    schema.validateSync(url);
+    return null;
+  } catch (err) {
+    return err.errors;
+  }
+};
 
 const normalizeUrl = (url) => {
   const urlWithProxy = new URL('/get', 'https://hexlet-allorigins.herokuapp.com');
