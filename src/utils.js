@@ -11,7 +11,7 @@ export const validate = (url) => {
     schema.validateSync(url);
     return null;
   } catch (err) {
-    return err;
+    return err.message;
   }
 };
 
