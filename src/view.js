@@ -26,6 +26,7 @@ const renderFormError = (state, elements) => {
   } else {
     elements.input.classList.add('is-invalid');
     elements.feedback.classList.add('text-danger');
+    console.log(elements.feedback);
     elements.feedback.textContent = rssField.error;
   }
 };
