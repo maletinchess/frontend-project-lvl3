@@ -18,14 +18,15 @@ const renderAppError = (error, elements) => {
   elements.feedback.textContent = error;
 };
 
-const renderFormError = (rssForm, elements) => {
-  if (rssForm.valid) {
+const renderFormError = (state, elements) => {
+  const { rssField } = state.form;
+  if (rssField.valid) {
     elements.input.classList.remove('danger-text');
     elements.input.classList.remove('is-invalid');
   } else {
     elements.input.classList.add('is-invalid');
     elements.feedback.classList.add('text-danger');
-    elements.feedback.textContent = rssForm.error;
+    elements.feedback.textContent = rssField.error;
   }
 };
 
@@ -33,7 +34,7 @@ const initview = (state, elements) => {
   const mapping = {
     xmlData: () => renderXmlData(state.xmlData, elements),
     error: () => renderAppError(state.error, elements),
-    'form.rssForm': () => renderFormError(state.form.rssForm, elements),
+    'form.rssField': () => renderFormError(state, elements),
   };
 
   const watchedState = onChange(state, (path) => {
