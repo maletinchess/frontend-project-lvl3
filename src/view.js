@@ -28,6 +28,7 @@ const renderFormError = (state, elements) => {
     elements.feedback.classList.add('text-danger');
     console.log(elements.feedback);
     elements.feedback.textContent = rssField.error;
+    console.log(rssField);
   }
 };
 
