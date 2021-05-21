@@ -25,6 +25,7 @@ const renderFormError = (state, elements) => {
     elements.input.classList.remove('is-invalid');
   } else {
     elements.input.classList.add('is-invalid');
+    elements.input.classList.add('text-danger');
     elements.feedback.classList.add('text-danger');
     console.log(elements.feedback);
     elements.feedback.textContent = rssField.error;

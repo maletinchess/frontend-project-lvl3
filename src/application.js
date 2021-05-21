@@ -57,6 +57,7 @@ const app = async () => {
       .catch((err) => {
         watchedState.error = err.message;
         watchedState.dataProcess = 'failed';
+        console.log(err);
       });
   });
 };
