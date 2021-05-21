@@ -29,12 +29,12 @@ const app = async () => {
     const formData = new FormData(e.target);
     const url = formData.get('url');
 
-    const errorUrl = validate(url);
+    const error = validate(url);
 
-    if (errorUrl) {
+    if (error) {
       watchedState.form.rssField = {
         valid: false,
-        errorUrl,
+        error,
       };
       return;
     }
@@ -49,8 +49,8 @@ const app = async () => {
         watchedState.xmlData = xml;
         watchedState.error = null;
       })
-      .catch((error) => {
-        watchedState.error = error;
+      .catch((err) => {
+        watchedState.error = err;
       });
   });
 };
