@@ -7,6 +7,7 @@ const app = async () => {
     input: document.querySelector('input'),
     posts: document.querySelector('.posts'),
     feedback: document.querySelector('.feedback'),
+    submitButton: document.querySelector('button.add'),
   };
 
   const state = {
@@ -19,6 +20,7 @@ const app = async () => {
     posts: [],
     feeds: [],
     error: null,
+    dataProcess: 'initial',
   };
 
   const watchedState = initview(state, elements);
@@ -44,13 +46,17 @@ const app = async () => {
       error: null,
     };
 
+    watchedState.dataProcess = 'sending';
+
     sendRequest(url)
       .then((xml) => {
         watchedState.xmlData = xml;
         watchedState.error = null;
+        watchedState.dataProcess = 'processed';
       })
       .catch((err) => {
-        watchedState.error = err;
+        watchedState.error = err.message;
+        watchedState.dataProcess = 'failed';
       });
   });
 };
