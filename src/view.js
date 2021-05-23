@@ -33,6 +33,7 @@ const renderPosts = (state, elements) => {
   postsHead.textContent = 'Posts';
   elements.posts.append(postsHead);
   const ul = document.createElement('ul');
+  ul.classList.add('list-group');
   posts.forEach((post) => {
     const { title, postLink, postId } = post;
 
