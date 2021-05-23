@@ -16,9 +16,9 @@ const parse = (xml) => {
   const feed = { title, description };
   const items = docXml.querySelectorAll('item');
   const posts = [...items].map((item) => ({
-    title: item.title,
-    description: item.description,
-    postLink: item.link,
+    title: item.querySelector('title').textContent,
+    description: item.querySelector('description').textContent,
+    postLink: item.querySelector('link').textContent,
   }));
 
   console.log(posts);
