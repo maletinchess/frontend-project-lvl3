@@ -15,9 +15,8 @@ const parse = (xml) => {
 
   const feed = { title, description };
   const items = docXml.querySelectorAll('item');
-  const posts = [...items];
-  console.log(posts);
-  return { feed };
+  const posts = [...items].map((item) => console.log(item, '!!!!!'));
+  return { feed, posts };
 };
 
 export default parse;
