@@ -43,6 +43,6 @@ export const addRss = (data, state, url) => {
   const mappedPosts = posts.map(
     (post, index) => ({ ...post, id, postId: state.posts.length + index }),
   );
-  state.posts = [...mappedPosts, state.posts];
+  state.posts = [...mappedPosts, ...state.posts];
   console.log(state.posts);
 };
