@@ -7,6 +7,7 @@ const app = async () => {
     form: document.querySelector('form'),
     input: document.querySelector('input'),
     posts: document.querySelector('.posts'),
+    feeds: document.querySelector('.feeds'),
     feedback: document.querySelector('.feedback'),
     submitButton: document.querySelector('button.add'),
   };
