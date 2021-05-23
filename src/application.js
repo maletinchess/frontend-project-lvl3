@@ -31,7 +31,9 @@ const app = async () => {
     const formData = new FormData(e.target);
     const url = formData.get('url');
 
-    const error = validate(url);
+    const urls = watchedState.feeds.map((feed) => feed.url);
+
+    const error = validate(url, urls);
 
     if (error) {
       watchedState.form.rssField = {
@@ -52,6 +54,8 @@ const app = async () => {
       .then((xml) => {
         watchedState.xmlData = xml;
         watchedState.error = null;
+        const newFeed = { url };
+        watchedState.feeds = [newFeed, ...watchedState.feeds];
         watchedState.dataProcess = 'processed';
       })
       .catch((err) => {

@@ -1,12 +1,15 @@
 import axios from 'axios';
 import * as yup from 'yup';
 
-export const validate = (url) => {
+export const validate = (url, urls) => {
   const schema = yup
     .string()
     .trim()
     .url()
-    .matches(/rss/);
+    .required()
+    .matches(/rss/)
+    .notOneOf(urls);
+
   try {
     schema.validateSync(url);
     return null;
