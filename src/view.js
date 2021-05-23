@@ -21,6 +21,7 @@ const renderPosts = (state, elements) => {
 };
 
 const renderAppError = (error, elements) => {
+  elements.feedback.innerHTML = '';
   if (!error) {
     elements.feedback.textContent = '';
   }
@@ -58,6 +59,8 @@ const renderForm = (dataProcess, elements) => {
       elements.input.select();
       elements.submitButton.focus();
       elements.input.value = '';
+      elements.feedback.classList.remove('text-success');
+      elements.feedback.classList.add('text-danger');
       break;
     case 'processed':
       elements.submitButton.removeAttribute('disabled');
