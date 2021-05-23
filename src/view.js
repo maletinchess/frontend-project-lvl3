@@ -11,7 +11,7 @@ const renderFeeds = (state, elements) => {
   const ul = document.createElement('ul');
   ul.classList.add('list-group');
   ul.classList.add('mb-5');
-  feedsHead.append(ul);
+  feedsHead.after(ul);
   feeds.forEach((feed) => {
     const { title, description } = feed;
     const li = document.createElement('li');
