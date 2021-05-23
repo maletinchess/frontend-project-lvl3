@@ -9,10 +9,13 @@ const renderFeeds = (state, elements) => {
   feedsHead.textContent = 'Feeds';
   elements.feeds.append(feedsHead);
   const ul = document.createElement('ul');
+  ul.classList.add('list-group');
+  ul.classList.add('mb-5');
   feedsHead.append(ul);
   feeds.forEach((feed) => {
     const { title, description } = feed;
     const li = document.createElement('li');
+    li.classList.add('list-group-item');
     ul.append(li);
     const h = document.createElement('h3');
     li.append(h);
@@ -32,11 +35,20 @@ const renderPosts = (state, elements) => {
   const ul = document.createElement('ul');
   posts.forEach((post) => {
     const { title, postLink, postId } = post;
+
     const postContainer = document.createElement('li');
+    postContainer.classList.add('list-group-item');
+    postContainer.classList.add('d-flex');
+    postContainer.classList.add('justify-content-between');
+    postContainer.classList.add('align-items-start');
+
     const linkElement = document.createElement('a');
     linkElement.textContent = title;
     linkElement.href = postLink;
     linkElement.setAttribute('data-id', postId);
+    linkElement.setAttribute('target', '_blank');
+    linkElement.setAttribute('rel', 'noopener noreferrer');
+
     postContainer.append(linkElement);
     ul.append(postContainer);
   });
