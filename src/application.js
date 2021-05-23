@@ -1,5 +1,6 @@
 import initview from './view';
 import sendRequest, { validate } from './utils';
+import parse from './parser';
 
 const app = async () => {
   const elements = {
@@ -52,7 +53,7 @@ const app = async () => {
 
     sendRequest(url)
       .then((xml) => {
-        watchedState.xmlData = xml;
+        watchedState.posts = [parse(xml), ...watchedState.posts];
         watchedState.error = null;
         const newFeed = { url };
         watchedState.feeds = [newFeed, ...watchedState.feeds];

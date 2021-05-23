@@ -2,13 +2,22 @@
 
 import onChange from 'on-change';
 
-const renderXmlData = (xml, elements) => {
+const renderPosts = (state, elements) => {
   elements.posts.innerHTML = '';
-  const messageContainer = document.createElement('div');
-  const p = document.createElement('p');
-  elements.posts.append(messageContainer);
-  messageContainer.append(p);
-  p.textContent = xml;
+  const { posts } = state;
+  const ul = document.createElement('ul');
+  posts.forEach((post) => {
+    const { feed } = post;
+    const li = document.createElement('li');
+    const descriptionEl = document.createElement('span');
+    const titleEl = document.createElement('span');
+    descriptionEl.textContent = feed.description;
+    titleEl.textContent = feed.title;
+    li.append(titleEl);
+    li.append(descriptionEl);
+    ul.append(li);
+  });
+  elements.posts.append(ul);
 };
 
 const renderAppError = (error, elements) => {
@@ -66,7 +75,7 @@ const renderForm = (dataProcess, elements) => {
 
 const initview = (state, elements) => {
   const mapping = {
-    xmlData: () => renderXmlData(state.xmlData, elements),
+    posts: () => renderPosts(state, elements),
     error: () => renderAppError(state.error, elements),
     'form.rssField': () => renderFormError(state, elements),
     dataProcess: () => renderForm(state.dataProcess, elements),

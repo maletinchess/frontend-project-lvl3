@@ -7,7 +7,6 @@ export const validate = (url, urls) => {
     .trim()
     .url()
     .required()
-    .matches(/rss/)
     .notOneOf(urls);
 
   try {
