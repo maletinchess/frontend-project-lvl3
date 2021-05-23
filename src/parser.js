@@ -14,6 +14,9 @@ const parse = (xml) => {
   const description = docXml.querySelector('description').textContent;
 
   const feed = { title, description };
+  const items = document.querySelectorAll('item');
+  const posts = [...items];
+  console.log(posts);
   return { feed };
 };
 
