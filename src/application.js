@@ -56,9 +56,9 @@ const app = async () => {
     sendRequest(url)
       .then((xml) => {
         const data = parse(xml);
+        console.log(data);
         watchedState.rssCount += 1;
         addRss(data, watchedState, watchedState.rssCount, url);
-        console.log(watchedState.posts);
         watchedState.error = null;
         watchedState.dataProcess = 'processed';
       })
