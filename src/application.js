@@ -1,5 +1,5 @@
 import initview from './view';
-import sendRequest, { validate } from './utils';
+import { sendRequest, addRss, validate } from './utils';
 import parse from './parser';
 
 const app = async () => {
@@ -20,6 +20,7 @@ const app = async () => {
     },
     posts: [],
     feeds: [],
+    rssCount: 0,
     error: null,
     dataProcess: 'initial',
   };
@@ -53,10 +54,10 @@ const app = async () => {
 
     sendRequest(url)
       .then((xml) => {
-        watchedState.posts = [parse(xml), ...watchedState.posts];
+        const data = parse(xml);
+        watchedState.rssCount += 1;
+        addRss(data, watchedState, watchedState.rssCount, url);
         watchedState.error = null;
-        const newFeed = { url };
-        watchedState.feeds = [newFeed, ...watchedState.feeds];
         watchedState.dataProcess = 'processed';
       })
       .catch((err) => {

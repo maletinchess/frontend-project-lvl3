@@ -1,3 +1,5 @@
+/* eslint-disable no-param-reassign */
+
 import axios from 'axios';
 import * as yup from 'yup';
 
@@ -24,10 +26,22 @@ const normalizeUrl = (url) => {
   return urlWithProxy.toString();
 };
 
-export default (url) => {
+export const sendRequest = (url) => {
   const normalizedUrl = normalizeUrl(url);
   return axios.get(normalizedUrl).then((response) => {
     const { data } = response;
     return data.contents;
   });
+};
+
+export const addRss = (data, state, url) => {
+  const { feed, posts } = data;
+  const id = state.rssCount;
+  const newFeed = { ...feed, id, url };
+  state.feeds = [newFeed, ...state.feeds];
+
+  const mappedPosts = posts.map(
+    (post, index) => ({ ...post, id, postId: state.posts.length + index }),
+  );
+  state.posts = [...mappedPosts, state.posts];
 };

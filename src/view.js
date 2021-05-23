@@ -2,22 +2,45 @@
 
 import onChange from 'on-change';
 
+const renderFeeds = (state, elements) => {
+  elements.feeds.innerHTML = '';
+  const { feeds } = state;
+  const feedsHead = document.createElement('h2');
+  feedsHead.textContent = 'Feeds';
+  elements.feeds.append(feedsHead);
+  const ul = document.createElement('ul');
+  feedsHead.append(ul);
+  feeds.forEach((feed) => {
+    const { title, description } = feed;
+    const li = document.createElement('li');
+    ul.append(li);
+    const h = document.createElement('h3');
+    li.append(h);
+    h.textContent = title;
+    const p = document.createElement('p');
+    h.after(p);
+    p.textContent = description;
+  });
+};
+
 const renderPosts = (state, elements) => {
   elements.posts.innerHTML = '';
   const { posts } = state;
+  const postsHead = document.createElement('h2');
+  postsHead.textContent = 'Posts';
+  elements.posts.append(postsHead);
   const ul = document.createElement('ul');
   posts.forEach((post) => {
-    const { feed } = post;
-    const li = document.createElement('li');
-    const descriptionEl = document.createElement('span');
-    const titleEl = document.createElement('span');
-    descriptionEl.textContent = feed.description;
-    titleEl.textContent = feed.title;
-    li.append(titleEl);
-    li.append(descriptionEl);
-    ul.append(li);
+    const { title, postLink, postId } = post;
+    const postContainer = document.createElement('li');
+    const linkElement = document.createElement('a');
+    linkElement.textContent = title;
+    linkElement.href = postLink;
+    linkElement.setAttribute('data-id', postId);
+    postContainer.append(linkElement);
+    ul.append(postContainer);
   });
-  elements.posts.append(ul);
+  postsHead.after(ul);
 };
 
 const renderAppError = (error, elements) => {
@@ -78,6 +101,7 @@ const renderForm = (dataProcess, elements) => {
 
 const initview = (state, elements) => {
   const mapping = {
+    feeds: () => renderFeeds(state, elements),
     posts: () => renderPosts(state, elements),
     error: () => renderAppError(state.error, elements),
     'form.rssField': () => renderFormError(state, elements),
