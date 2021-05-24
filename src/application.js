@@ -19,6 +19,12 @@ const app = async () => {
     feeds: document.querySelector('.feeds'),
     feedback: document.querySelector('.feedback'),
     submitButton: document.querySelector('button.add'),
+    modalElements: {
+      modalContainer: document.querySelector('#modal'),
+      modalTitle: document.querySelector('.modal-title'),
+      modalBody: document.querySelector('.modal-body'),
+      modalRef: document.querySelector('.full-article'),
+    },
   };
 
   const state = {
@@ -28,12 +34,20 @@ const app = async () => {
         error: null,
       },
     },
+    modalContent: {
+      title: '',
+      description: '',
+      link: '',
+    },
     posts: [],
     feeds: [],
     savedUrls: [],
     rssCount: 0,
     error: null,
     dataProcess: 'initial',
+    uiState: {
+      readPosts: [],
+    },
   };
 
   const watchedState = initview(state, elements);
@@ -80,6 +94,18 @@ const app = async () => {
           watchedState.error = i18next.t('errorMessage.network');
         }
       });
+  });
+
+  elements.modalElements.modalContainer.addEventListener('show.bs.modal', (e) => {
+    const relatedElement = e.relatedTarget;
+    const dataId = Number(relatedElement.dataset.id);
+    watchedState.uiState.readPosts.push(dataId);
+    const relatedPost = watchedState.posts.find((post) => post.postId === dataId);
+    const { title, description, postLink } = relatedPost;
+    watchedState.modalContent = {
+      title, description, link: postLink,
+    };
+    console.log(elements.modalContainer, watchedState.modalContent);
   });
 };
 

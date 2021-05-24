@@ -3,6 +3,21 @@
 import onChange from 'on-change';
 import i18next from 'i18next';
 
+const linkFontClass = {
+  default: 'fw-bold',
+  read: 'fw-normal',
+};
+
+const renderModalElement = (state, elements) => {
+  const { modalContent } = state;
+  const { title, description, link } = modalContent;
+  const { modalElements } = elements;
+  const { modalTitle, modalBody, modalRef } = modalElements;
+  modalTitle.textContent = title;
+  modalRef.href = link;
+  modalBody.textContent = description;
+};
+
 const renderFeeds = (state, elements) => {
   elements.feeds.innerHTML = '';
   const { feeds } = state;
@@ -44,12 +59,24 @@ const renderPosts = (state, elements) => {
     const linkElement = document.createElement('a');
     linkElement.textContent = title;
     linkElement.href = postLink;
-    linkElement.setAttribute('data-id', postId);
+    linkElement.setAttribute('data-id', `${postId}`);
     linkElement.setAttribute('target', '_blank');
     linkElement.setAttribute('rel', 'noopener noreferrer');
-    linkElement.classList.add('fw-bold', 'text-decoration-none', 'm-2');
+
+    const actualFontClass = state.uiState.readPosts.includes(postId)
+      ? linkFontClass.read
+      : linkFontClass.default;
+    linkElement.classList.add(actualFontClass, 'text-decoration-none', 'm-2');
+
+    const modalButton = document.createElement('button');
+    modalButton.classList.add('btn', 'btn-primary', 'btn-sm');
+    modalButton.setAttribute('data-id', `${postId}`);
+    modalButton.setAttribute('data-bs-toggle', 'modal');
+    modalButton.setAttribute('data-bs-target', '#modal');
+    modalButton.textContent = i18next.t('view');
 
     postContainer.append(linkElement);
+    postContainer.append(modalButton);
     ul.append(postContainer);
   });
   postsHead.after(ul);
@@ -120,6 +147,7 @@ const initview = (state, elements) => {
     error: () => renderAppError(state.error, elements),
     'form.rssField': () => renderFormError(state, elements),
     dataProcess: () => renderForm(state.dataProcess, elements),
+    modalContent: () => renderModalElement(state, elements),
   };
 
   const watchedState = onChange(state, (path) => {
