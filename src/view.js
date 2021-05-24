@@ -39,7 +39,7 @@ const renderPosts = (state, elements) => {
     const { title, postLink, postId } = post;
 
     const postContainer = document.createElement('li');
-    postContainer.classList.add('list-group-item', 'd-flex', 'justify-content-between', 'align-items-start', 'mb-5');
+    postContainer.classList.add('list-group-item', 'd-flex', 'justify-content-between', 'align-items-start');
 
     const linkElement = document.createElement('a');
     linkElement.textContent = title;
@@ -47,7 +47,7 @@ const renderPosts = (state, elements) => {
     linkElement.setAttribute('data-id', postId);
     linkElement.setAttribute('target', '_blank');
     linkElement.setAttribute('rel', 'noopener noreferrer');
-    linkElement.classList.add('fw-bold', 'text-decoration-none');
+    linkElement.classList.add('fw-bold', 'text-decoration-none', 'm-3');
 
     postContainer.append(linkElement);
     ul.append(postContainer);
