@@ -112,7 +112,7 @@ const app = async () => {
     const choosedElem = e.target;
     if (choosedElem.classList.contains('link')) {
       const dataId = Number(choosedElem.dataset.id);
-      watchedState.uiState.readPostsId.push(dataId);
+      watchedState.uiState.readPosts.push(dataId);
     }
   });
 };
