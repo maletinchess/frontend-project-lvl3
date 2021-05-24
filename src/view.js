@@ -2,6 +2,7 @@
 
 import onChange from 'on-change';
 import i18next from 'i18next';
+import 'bootstrap/js/dist/modal';
 
 const linkFontClass = {
   default: 'fw-bold',
