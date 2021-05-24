@@ -107,6 +107,14 @@ const app = async () => {
     };
     console.log(elements.modalElements.modalContainer, watchedState.modalContent);
   });
+
+  elements.posts.addEventListener('click', (e) => {
+    const choosedElem = e.target;
+    if (choosedElem.classList.contains('link')) {
+      const dataId = Number(choosedElem.dataset.id);
+      watchedState.readPostsId.push(dataId);
+    }
+  });
 };
 
 export default app;

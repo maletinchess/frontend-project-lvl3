@@ -67,7 +67,7 @@ const renderPosts = (state, elements) => {
     const actualFontClass = state.uiState.readPosts.includes(postId)
       ? linkFontClass.read
       : linkFontClass.default;
-    linkElement.classList.add(actualFontClass, 'text-decoration-none', 'm-2');
+    linkElement.classList.add(actualFontClass, 'text-decoration-none', 'm-2', 'link');
 
     const modalButton = document.createElement('button');
     modalButton.classList.add('btn', 'btn-primary', 'btn-sm');
