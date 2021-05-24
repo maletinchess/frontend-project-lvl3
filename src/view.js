@@ -4,9 +4,14 @@ import onChange from 'on-change';
 import i18next from 'i18next';
 import 'bootstrap/js/dist/modal';
 
-const linkFontClass = {
+const linkFontClassBootstrap = {
   default: 'font-weight-bold',
   read: 'font-weight-normal',
+};
+
+const linkFontClassBootstrap5 = {
+  default: 'fw-bold',
+  read: 'fw-normal',
 };
 
 const renderModalElement = (state, elements) => {
@@ -64,10 +69,15 @@ const renderPosts = (state, elements) => {
     linkElement.setAttribute('target', '_blank');
     linkElement.setAttribute('rel', 'noopener noreferrer');
 
-    const actualFontClass = state.uiState.readPosts.includes(postId)
-      ? linkFontClass.read
-      : linkFontClass.default;
-    linkElement.classList.add(actualFontClass, 'text-decoration-none', 'm-2', 'link');
+    const actualFontClassBootstrap5 = state.uiState.readPosts.includes(postId)
+      ? linkFontClassBootstrap5.read
+      : linkFontClassBootstrap5.default;
+
+    const actualFontClassBootstrap = state.uiState.readPosts.includes(postId)
+      ? linkFontClassBootstrap.read
+      : linkFontClassBootstrap.default;
+
+    linkElement.classList.add(actualFontClassBootstrap, actualFontClassBootstrap5, 'text-decoration-none', 'm-2', 'link');
 
     const modalButton = document.createElement('button');
     modalButton.classList.add('btn', 'btn-primary', 'btn-sm');
