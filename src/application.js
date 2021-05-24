@@ -21,6 +21,7 @@ const app = async () => {
     },
     posts: [],
     feeds: [],
+    savedUrls: [],
     rssCount: 0,
     error: null,
     dataProcess: 'initial',
@@ -34,7 +35,7 @@ const app = async () => {
     const formData = new FormData(e.target);
     const url = formData.get('url');
 
-    const urls = watchedState.feeds.map((feed) => feed.url);
+    const urls = watchedState.savedUrls.map((item) => item.url);
 
     const error = validate(url, urls);
 
@@ -58,6 +59,7 @@ const app = async () => {
         const data = parse(xml);
         console.log(data);
         watchedState.rssCount += 1;
+        watchedState.savedUrls = [{ url, id: watchedState.rssCount }, ...watchedState.savedUrls];
         addRss(data, watchedState, watchedState.rssCount, url);
         watchedState.error = null;
         watchedState.dataProcess = 'processed';
