@@ -4,6 +4,8 @@ import axios from 'axios';
 import * as yup from 'yup';
 import { setLocale } from 'yup';
 import i18next from 'i18next';
+import _ from 'lodash';
+import parse from './parser';
 
 export const validate = (url, urls) => {
   setLocale({
@@ -45,6 +47,36 @@ export const sendRequest = (url) => {
   });
 };
 
+const autoUpdateRss = (state, url, id) => {
+  sendRequest(url)
+    .then((xml) => {
+      const data = parse(xml);
+      return data;
+    })
+    .catch(() => {
+      state.error = i18next.t('errorMessage.invalidRSS');
+    })
+    .then((data) => {
+      const { receivedPosts } = data;
+      const { statePosts } = state.posts;
+      const mappedStatePosts = statePosts.map((post) => ({
+        title: post.title,
+        description: post.description,
+        postLink: post.postLink,
+      }));
+
+      const newPosts = _.differenceWith(receivedPosts, mappedStatePosts, _.isEqual);
+      if (newPosts.length > 0) {
+        const mappedNewPosts = newPosts.map(
+          (newPost, index) => ({ ...newPost, id, postId: statePosts.length + index }),
+        );
+        state.posts = [...mappedNewPosts, statePosts];
+      }
+    });
+
+  setTimeout(() => autoUpdateRss(state, url, id), 5000);
+};
+
 export const addRss = (data, state, url) => {
   const { feed, posts } = data;
   const id = state.rssCount;
@@ -55,4 +87,6 @@ export const addRss = (data, state, url) => {
     (post, index) => ({ ...post, id, postId: state.posts.length + index }),
   );
   state.posts = [...mappedPosts, ...state.posts];
+
+  autoUpdateRss(state, url, id);
 };
