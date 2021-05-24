@@ -51,12 +51,6 @@ const autoUpdateRss = (state, url, id) => {
   sendRequest(url)
     .then((xml) => {
       const data = parse(xml);
-      return data;
-    })
-    .catch(() => {
-      state.error = i18next.t('errorMessage.invalidRSS');
-    })
-    .then((data) => {
       const { posts: receivedPosts } = data;
       const { posts: statePosts } = state;
       const mappedStatePosts = statePosts.map((post) => ({
