@@ -66,7 +66,7 @@ const autoUpdateRss = (state, url, id) => {
         const mappedNewPosts = newPosts.map(
           (newPost, index) => ({ ...newPost, id, postId: statePosts.length + index }),
         );
-        state.posts = [...mappedNewPosts, statePosts];
+        state.posts = [...mappedNewPosts, ...statePosts];
       }
     });
 
