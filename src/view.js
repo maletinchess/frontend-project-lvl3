@@ -1,12 +1,13 @@
 /* eslint-disable no-param-reassign */
 
 import onChange from 'on-change';
+import i18next from 'i18next';
 
 const renderFeeds = (state, elements) => {
   elements.feeds.innerHTML = '';
   const { feeds } = state;
   const feedsHead = document.createElement('h2');
-  feedsHead.textContent = 'Feeds';
+  feedsHead.textContent = i18next.t('feedsHead');
   elements.feeds.append(feedsHead);
   const ul = document.createElement('ul');
   ul.classList.add('list-group');
@@ -30,7 +31,7 @@ const renderPosts = (state, elements) => {
   elements.posts.innerHTML = '';
   const { posts } = state;
   const postsHead = document.createElement('h2');
-  postsHead.textContent = 'Posts';
+  postsHead.textContent = i18next.t('postsHead');
   elements.posts.append(postsHead);
   const ul = document.createElement('ul');
   ul.classList.add('list-group');
@@ -72,9 +73,7 @@ const renderFormError = (state, elements) => {
   } else {
     elements.input.classList.add('is-invalid');
     elements.feedback.classList.add('text-danger');
-    console.log(elements.feedback);
-    elements.feedback.textContent = rssField.error;
-    console.log(rssField);
+    elements.feedback.textContent = i18next.t(rssField.error);
   }
 };
 
@@ -109,7 +108,7 @@ const renderForm = (dataProcess, elements) => {
       elements.input.select();
       elements.feedback.classList.add('text-success');
       elements.feedback.classList.remove('text-danger');
-      elements.feedback.textContent = 'RSS successfully loaded';
+      elements.feedback.textContent = i18next.t('successMessage');
       break;
     default:
       throw new Error(`Unknown process ${dataProcess}`);

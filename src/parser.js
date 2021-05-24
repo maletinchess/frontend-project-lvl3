@@ -21,7 +21,6 @@ const parse = (xml) => {
     postLink: item.querySelector('link').textContent,
   }));
 
-  console.log(posts);
   return { feed, posts };
 };
 

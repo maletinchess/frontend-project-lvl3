@@ -1,8 +1,17 @@
+import i18next from 'i18next';
 import initview from './view';
 import { sendRequest, addRss, validate } from './utils';
 import parse from './parser';
+import resources from './locales';
 
 const app = async () => {
+  const defaultLanguage = 'ru';
+  await i18next.init({
+    lng: defaultLanguage,
+    debug: true,
+    resources,
+  });
+
   const elements = {
     form: document.querySelector('form'),
     input: document.querySelector('input'),
@@ -57,7 +66,6 @@ const app = async () => {
     sendRequest(url)
       .then((xml) => {
         const data = parse(xml);
-        console.log(data);
         watchedState.rssCount += 1;
         watchedState.savedUrls = [{ url, id: watchedState.rssCount }, ...watchedState.savedUrls];
         addRss(data, watchedState, watchedState.rssCount, url);
@@ -65,8 +73,12 @@ const app = async () => {
         watchedState.dataProcess = 'processed';
       })
       .catch((err) => {
-        watchedState.error = err.message;
         watchedState.dataProcess = 'failed';
+        if (err.isParsingError) {
+          watchedState.error = i18next.t('errorMessage.invalidRSS');
+        } else {
+          watchedState.error = i18next.t('errorMessage.network');
+        }
         console.log(err);
       });
   });
