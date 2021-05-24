@@ -92,6 +92,8 @@ const renderForm = (dataProcess, elements) => {
     case 'failed':
       elements.submitButton.removeAttribute('disabled');
       elements.input.removeAttribute('disabled');
+      elements.input.classList.add('is-invalid');
+      elements.feedback.classList.add('text-danger');
       elements.input.select();
       elements.submitButton.focus();
       elements.input.value = '';
@@ -100,6 +102,8 @@ const renderForm = (dataProcess, elements) => {
       break;
     case 'processed':
       elements.submitButton.removeAttribute('disabled');
+      elements.input.classList.remove('danger-text');
+      elements.input.classList.remove('is-invalid');
       elements.input.removeAttribute('disabled');
       elements.input.value = '';
       elements.input.select();
