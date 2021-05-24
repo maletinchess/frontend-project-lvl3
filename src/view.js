@@ -111,12 +111,12 @@ const renderForm = (dataProcess, elements) => {
       break;
     case 'sending':
       elements.submitButton.setAttribute('disabled', true);
-      elements.input.setAttribute('disabled', true);
+      elements.input.setAttribute('readonly', true);
       elements.submitButton.focus();
       break;
     case 'failed':
       elements.submitButton.removeAttribute('disabled');
-      elements.input.removeAttribute('disabled');
+      elements.input.removeAttribute('readonly');
       elements.input.classList.add('is-invalid');
       elements.feedback.classList.add('text-danger');
       elements.input.select();
@@ -129,7 +129,7 @@ const renderForm = (dataProcess, elements) => {
       elements.submitButton.removeAttribute('disabled');
       elements.input.classList.remove('danger-text');
       elements.input.classList.remove('is-invalid');
-      elements.input.removeAttribute('disabled');
+      elements.input.removeAttribute('readonly');
       elements.input.value = '';
       elements.input.select();
       elements.feedback.classList.add('text-success');
