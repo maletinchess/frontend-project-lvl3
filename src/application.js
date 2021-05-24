@@ -79,7 +79,6 @@ const app = async () => {
         } else {
           watchedState.error = i18next.t('errorMessage.network');
         }
-        console.log(err);
       });
   });
 };

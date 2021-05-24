@@ -47,27 +47,29 @@ export const sendRequest = (url) => {
   });
 };
 
+const updatePosts = (state, receivedPosts, statePosts, id) => {
+  const mappedStatePosts = statePosts.map((post) => ({
+    title: post.title,
+    description: post.description,
+    postLink: post.postLink,
+  }));
+
+  const newPosts = _.differenceWith(receivedPosts, mappedStatePosts, _.isEqual);
+  if (newPosts.length > 0) {
+    const mappedNewPosts = newPosts.map(
+      (newPost, index) => ({ ...newPost, id, postId: statePosts.length + index }),
+    );
+    state.posts = [...mappedNewPosts, ...statePosts];
+  }
+};
+
 const autoUpdateRss = (state, url, id) => {
   sendRequest(url)
     .then((xml) => {
-      console.log(xml);
       const data = parse(xml);
-      console.log(data);
       const { posts: receivedPosts } = data;
       const { posts: statePosts } = state;
-      const mappedStatePosts = statePosts.map((post) => ({
-        title: post.title,
-        description: post.description,
-        postLink: post.postLink,
-      }));
-
-      const newPosts = _.differenceWith(receivedPosts, mappedStatePosts, _.isEqual);
-      if (newPosts.length > 0) {
-        const mappedNewPosts = newPosts.map(
-          (newPost, index) => ({ ...newPost, id, postId: statePosts.length + index }),
-        );
-        state.posts = [...mappedNewPosts, ...statePosts];
-      }
+      updatePosts(state, receivedPosts, statePosts, id);
     });
 
   setTimeout(() => autoUpdateRss(state, url, id), 5000);
