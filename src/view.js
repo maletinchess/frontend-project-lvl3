@@ -5,8 +5,8 @@ import i18next from 'i18next';
 import 'bootstrap/js/dist/modal';
 
 const linkFontClass = {
-  default: 'fw-bold',
-  read: 'fw-normal',
+  default: 'font-weight-bold',
+  read: 'font-weight-normal',
 };
 
 const renderModalElement = (state, elements) => {
