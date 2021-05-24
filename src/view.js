@@ -149,6 +149,7 @@ const initview = (state, elements) => {
     'form.rssField': () => renderFormError(state, elements),
     dataProcess: () => renderForm(state.dataProcess, elements),
     modalContent: () => renderModalElement(state, elements),
+    'uiState.readPosts': () => renderPosts(state, elements),
   };
 
   const watchedState = onChange(state, (path) => {
