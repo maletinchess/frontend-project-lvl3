@@ -68,7 +68,7 @@ const app = async () => {
         const data = parse(xml);
         watchedState.rssCount += 1;
         watchedState.savedUrls = [{ url, id: watchedState.rssCount }, ...watchedState.savedUrls];
-        addRss(data, watchedState, watchedState.rssCount, url);
+        addRss(data, watchedState, url);
         watchedState.error = null;
         watchedState.dataProcess = 'processed';
       })
