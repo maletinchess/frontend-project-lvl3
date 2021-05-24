@@ -50,7 +50,9 @@ export const sendRequest = (url) => {
 const autoUpdateRss = (state, url, id) => {
   sendRequest(url)
     .then((xml) => {
+      console.log(xml);
       const data = parse(xml);
+      console.log(data);
       const { posts: receivedPosts } = data;
       const { posts: statePosts } = state;
       const mappedStatePosts = statePosts.map((post) => ({
