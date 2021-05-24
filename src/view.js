@@ -39,10 +39,7 @@ const renderPosts = (state, elements) => {
     const { title, postLink, postId } = post;
 
     const postContainer = document.createElement('li');
-    postContainer.classList.add('list-group-item');
-    postContainer.classList.add('d-flex');
-    postContainer.classList.add('justify-content-between');
-    postContainer.classList.add('align-items-start');
+    postContainer.classList.add('list-group-item', 'd-flex', 'justify-content-between', 'align-items-start', 'mb-5');
 
     const linkElement = document.createElement('a');
     linkElement.textContent = title;
