@@ -50,7 +50,7 @@ const renderPosts = (state, elements) => {
     linkElement.setAttribute('data-id', postId);
     linkElement.setAttribute('target', '_blank');
     linkElement.setAttribute('rel', 'noopener noreferrer');
-    linkElement.classList.add('fw-bold', 'list-group-item', 'list-group-item-action');
+    linkElement.classList.add('fw-bold', 'text-decoration-none');
 
     postContainer.append(linkElement);
     ul.append(postContainer);
