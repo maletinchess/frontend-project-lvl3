@@ -105,7 +105,6 @@ const app = async () => {
     watchedState.modalContent = {
       title, description, link: postLink,
     };
-    console.log(elements.modalElements.modalContainer, watchedState.modalContent);
   });
 
   elements.posts.addEventListener('click', (e) => {
