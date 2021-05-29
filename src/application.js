@@ -96,22 +96,21 @@ const app = async () => {
       });
   });
 
-  elements.modalElements.modalContainer.addEventListener('show.bs.modal', (e) => {
-    const relatedElement = e.relatedTarget;
-    const dataId = Number(relatedElement.dataset.id);
-    watchedState.uiState.readPosts.push(dataId);
-    const relatedPost = watchedState.posts.find((post) => post.postId === dataId);
-    const { title, description, postLink } = relatedPost;
-    watchedState.modalContent = {
-      title, description, link: postLink,
-    };
-  });
-
   elements.posts.addEventListener('click', (e) => {
     const choosedElem = e.target;
     if (choosedElem.classList.contains('link')) {
       const dataId = Number(choosedElem.dataset.id);
       watchedState.uiState.readPosts.push(dataId);
+    }
+
+    if (choosedElem.hasAttribute('data-bs-toggle')) {
+      const dataId = Number(choosedElem.dataset.id);
+      watchedState.uiState.readPosts.push(dataId);
+      const relatedPost = watchedState.posts.find((post) => post.postId === dataId);
+      const { title, description, postLink } = relatedPost;
+      elements.modalElements.modalTitle.textContent = title;
+      elements.modalElements.modalBody.textContent = description;
+      elements.modalElements.modalRef = postLink;
     }
   });
 };

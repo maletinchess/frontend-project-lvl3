@@ -14,16 +14,6 @@ const linkFontClassBootstrap5 = {
   read: 'fw-normal',
 };
 
-const renderModalElement = (state, elements) => {
-  const { modalContent } = state;
-  const { title, description, link } = modalContent;
-  const { modalElements } = elements;
-  const { modalTitle, modalBody, modalRef } = modalElements;
-  modalTitle.textContent = title;
-  modalRef.href = link;
-  modalBody.textContent = description;
-};
-
 const renderFeeds = (state, elements) => {
   elements.feeds.innerHTML = '';
   const { feeds } = state;
@@ -158,7 +148,6 @@ const initview = (state, elements) => {
     error: () => renderAppError(state.error, elements),
     'form.rssField': () => renderFormError(state, elements),
     dataProcess: () => renderForm(state.dataProcess, elements),
-    modalContent: () => renderModalElement(state, elements),
     'uiState.readPosts': () => renderPosts(state, elements),
   };
 
