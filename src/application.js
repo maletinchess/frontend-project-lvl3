@@ -110,7 +110,7 @@ const app = async () => {
       const { title, description, postLink } = relatedPost;
       elements.modalElements.modalTitle.textContent = title;
       elements.modalElements.modalBody.textContent = description;
-      elements.modalElements.modalRef = postLink;
+      elements.modalElements.modalRef.href = postLink;
     }
   });
 };
