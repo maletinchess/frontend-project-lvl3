@@ -86,8 +86,6 @@ const init = () => {
         }
         if (err.isAxiosError) {
           watchedState.error = i18next.t('errorMessage.network');
-        } else {
-          throw new Error(`Unknown error ${err}`);
         }
       });
   });
