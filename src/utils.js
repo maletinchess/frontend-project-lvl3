@@ -3,18 +3,17 @@
 import axios from 'axios';
 import * as yup from 'yup';
 import { setLocale } from 'yup';
-import i18next from 'i18next';
 import _ from 'lodash';
 import parse from './parser';
 
-export const validate = (url, urls) => {
+export const validate = (url, urls, i18n) => {
   setLocale({
     string: {
-      url: i18next.t('errorMessage.invalidUrl'),
+      url: i18n.t('errorMessage.invalidUrl'),
     },
     mixed: {
-      required: i18next.t('errorMessage.emptyField'),
-      notOneOf: i18next.t('errorMessage.existedRss'),
+      required: i18n.t('errorMessage.emptyField'),
+      notOneOf: i18n.t('errorMessage.existedRss'),
     },
   });
   const schema = yup
@@ -77,7 +76,7 @@ const autoUpdateRss = (state, url, id) => {
 
 export const addRss = (data, state, url) => {
   const { feed, posts } = data;
-  const id = state.rssCount;
+  const id = state.savedUrls.length;
   const newFeed = { ...feed, id, url };
   state.feeds = [newFeed, ...state.feeds];
 

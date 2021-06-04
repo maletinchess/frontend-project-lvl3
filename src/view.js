@@ -1,7 +1,6 @@
 /* eslint-disable no-param-reassign */
 
 import onChange from 'on-change';
-import i18next from 'i18next';
 import 'bootstrap/js/dist/modal';
 
 const linkFontClassBootstrap = {
@@ -14,11 +13,11 @@ const linkFontClassBootstrap5 = {
   read: 'fw-normal',
 };
 
-const renderFeeds = (state, elements) => {
+const renderFeeds = (state, elements, i18n) => {
   elements.feeds.innerHTML = '';
   const { feeds } = state;
   const feedsHead = document.createElement('h2');
-  feedsHead.textContent = i18next.t('feedsHead');
+  feedsHead.textContent = i18n.t('feedsHead');
   elements.feeds.append(feedsHead);
   const ul = document.createElement('ul');
   ul.classList.add('list-group');
@@ -38,11 +37,11 @@ const renderFeeds = (state, elements) => {
   });
 };
 
-const renderPosts = (state, elements) => {
+const renderPosts = (state, elements, i18n) => {
   elements.posts.innerHTML = '';
   const { posts } = state;
   const postsHead = document.createElement('h2');
-  postsHead.textContent = i18next.t('postsHead');
+  postsHead.textContent = i18n.t('postsHead');
   elements.posts.append(postsHead);
   const ul = document.createElement('ul');
   ul.classList.add('list-group');
@@ -59,11 +58,11 @@ const renderPosts = (state, elements) => {
     linkElement.setAttribute('target', '_blank');
     linkElement.setAttribute('rel', 'noopener noreferrer');
 
-    const actualFontClassBootstrap5 = state.uiState.readPosts.includes(postId)
+    const actualFontClassBootstrap5 = state.uiState.readPosts.has(postId)
       ? linkFontClassBootstrap5.read
       : linkFontClassBootstrap5.default;
 
-    const actualFontClassBootstrap = state.uiState.readPosts.includes(postId)
+    const actualFontClassBootstrap = state.uiState.readPosts.has(postId)
       ? linkFontClassBootstrap.read
       : linkFontClassBootstrap.default;
 
@@ -74,7 +73,7 @@ const renderPosts = (state, elements) => {
     modalButton.setAttribute('data-id', `${postId}`);
     modalButton.setAttribute('data-bs-toggle', 'modal');
     modalButton.setAttribute('data-bs-target', '#modal');
-    modalButton.textContent = i18next.t('view');
+    modalButton.textContent = i18n.t('view');
 
     postContainer.append(linkElement);
     postContainer.append(modalButton);
@@ -91,7 +90,7 @@ const renderAppError = (error, elements) => {
   elements.feedback.textContent = error;
 };
 
-const renderFormError = (state, elements) => {
+const renderFormError = (state, elements, i18n) => {
   const { rssField } = state.form;
   if (rssField.valid) {
     elements.input.classList.remove('danger-text');
@@ -99,11 +98,11 @@ const renderFormError = (state, elements) => {
   } else {
     elements.input.classList.add('is-invalid');
     elements.feedback.classList.add('text-danger');
-    elements.feedback.textContent = i18next.t(rssField.error);
+    elements.feedback.textContent = i18n.t(rssField.error);
   }
 };
 
-const renderForm = (dataProcess, elements) => {
+const renderForm = (dataProcess, elements, i18n) => {
   switch (dataProcess) {
     case 'initial':
       elements.submitButton.focus();
@@ -134,21 +133,21 @@ const renderForm = (dataProcess, elements) => {
       elements.input.select();
       elements.feedback.classList.add('text-success');
       elements.feedback.classList.remove('text-danger');
-      elements.feedback.textContent = i18next.t('successMessage');
+      elements.feedback.textContent = i18n.t('successMessage');
       break;
     default:
       throw new Error(`Unknown process ${dataProcess}`);
   }
 };
 
-const initview = (state, elements) => {
+const initview = (state, elements, i18n) => {
   const mapping = {
-    feeds: () => renderFeeds(state, elements),
-    posts: () => renderPosts(state, elements),
+    feeds: () => renderFeeds(state, elements, i18n),
+    posts: () => renderPosts(state, elements, i18n),
     error: () => renderAppError(state.error, elements),
-    'form.rssField': () => renderFormError(state, elements),
-    dataProcess: () => renderForm(state.dataProcess, elements),
-    'uiState.readPosts': () => renderPosts(state, elements),
+    'form.rssField': () => renderFormError(state, elements, i18n),
+    dataProcess: () => renderForm(state.dataProcess, elements, i18n),
+    'uiState.readPosts': () => renderPosts(state, elements, i18n),
   };
 
   const watchedState = onChange(state, (path) => mapping[path]?.());
