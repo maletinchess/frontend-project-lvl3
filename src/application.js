@@ -4,14 +4,7 @@ import { sendRequest, addRss, validate } from './utils';
 import parse from './parser';
 import resources from './locales';
 
-const app = async () => {
-  const defaultLanguage = 'ru';
-  await i18next.init({
-    lng: defaultLanguage,
-    debug: true,
-    resources,
-  });
-
+const init = () => {
   const elements = {
     form: document.querySelector('form'),
     input: document.querySelector('input'),
@@ -58,7 +51,7 @@ const app = async () => {
     const formData = new FormData(e.target);
     const url = formData.get('url');
 
-    const urls = watchedState.savedUrls.map((item) => item.url);
+    const urls = watchedState.savedUrls;
 
     const error = validate(url, urls);
 
@@ -81,7 +74,7 @@ const app = async () => {
       .then((xml) => {
         const data = parse(xml);
         watchedState.rssCount += 1;
-        watchedState.savedUrls = [{ url, id: watchedState.rssCount }, ...watchedState.savedUrls];
+        watchedState.savedUrls.push(url);
         addRss(data, watchedState, url);
         watchedState.error = null;
         watchedState.dataProcess = 'processed';
@@ -90,8 +83,11 @@ const app = async () => {
         watchedState.dataProcess = 'failed';
         if (err.isParsingError) {
           watchedState.error = i18next.t('errorMessage.invalidRSS');
-        } else {
+        }
+        if (err.isAxiosError) {
           watchedState.error = i18next.t('errorMessage.network');
+        } else {
+          throw new Error(`Unknown error ${err}`);
         }
       });
   });
@@ -99,12 +95,12 @@ const app = async () => {
   elements.posts.addEventListener('click', (e) => {
     const choosedElem = e.target;
     if (choosedElem.classList.contains('link')) {
-      const dataId = Number(choosedElem.dataset.id);
+      const dataId = choosedElem.dataset.id;
       watchedState.uiState.readPosts.push(dataId);
     }
 
     if (choosedElem.hasAttribute('data-bs-toggle')) {
-      const dataId = Number(choosedElem.dataset.id);
+      const dataId = choosedElem.dataset.id;
       watchedState.uiState.readPosts.push(dataId);
       const relatedPost = watchedState.posts.find((post) => post.postId === dataId);
       const { title, description, postLink } = relatedPost;
@@ -115,4 +111,13 @@ const app = async () => {
   });
 };
 
-export default app;
+const runApp = () => {
+  const defaultLanguage = 'ru';
+  i18next.init({
+    lng: defaultLanguage,
+    debug: true,
+    resources,
+  }).then(() => init());
+};
+
+export default runApp;

@@ -1,5 +1,5 @@
 import '../styles/main.scss';
 
-import app from './application';
+import runApp from './application';
 
-app();
+runApp();

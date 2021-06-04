@@ -151,11 +151,7 @@ const initview = (state, elements) => {
     'uiState.readPosts': () => renderPosts(state, elements),
   };
 
-  const watchedState = onChange(state, (path) => {
-    if (mapping[path]) {
-      mapping[path]();
-    }
-  });
+  const watchedState = onChange(state, (path) => mapping[path]?.());
   return watchedState;
 };
 

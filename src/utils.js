@@ -57,7 +57,7 @@ const updatePosts = (state, receivedPosts, statePosts, id) => {
   const newPosts = _.differenceWith(receivedPosts, mappedStatePosts, _.isEqual);
   if (newPosts.length > 0) {
     const mappedNewPosts = newPosts.map(
-      (newPost, index) => ({ ...newPost, id, postId: statePosts.length + index }),
+      (newPost) => ({ ...newPost, id, postId: _.uniqueId() }),
     );
     state.posts = [...mappedNewPosts, ...statePosts];
   }
@@ -82,7 +82,7 @@ export const addRss = (data, state, url) => {
   state.feeds = [newFeed, ...state.feeds];
 
   const mappedPosts = posts.map(
-    (post, index) => ({ ...post, id, postId: state.posts.length + index }),
+    (post) => ({ ...post, id, postId: _.uniqueId() }),
   );
   state.posts = [...mappedPosts, ...state.posts];
 
