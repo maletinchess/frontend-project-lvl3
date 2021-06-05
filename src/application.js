@@ -27,11 +27,7 @@ const init = (i18n) => {
         error: null,
       },
     },
-    modalContent: {
-      title: '',
-      description: '',
-      link: '',
-    },
+    modalContentId: null,
     posts: [],
     feeds: [],
     savedUrls: [],
@@ -90,19 +86,16 @@ const init = (i18n) => {
 
   elements.posts.addEventListener('click', (e) => {
     const choosedElem = e.target;
-    if (choosedElem.classList.contains('link')) {
+    if (choosedElem.hasAttribute('data-id')) {
       const dataId = choosedElem.dataset.id;
       watchedState.uiState.readPosts.add(dataId);
     }
 
-    if (choosedElem.hasAttribute('data-bs-toggle')) {
+    if (choosedElem.hasAttribute('data-id')
+    && choosedElem.hasAttribute('data-bs-toggle')) {
       const dataId = choosedElem.dataset.id;
       watchedState.uiState.readPosts.add(dataId);
-      const relatedPost = watchedState.posts.find((post) => post.postId === dataId);
-      const { title, description, postLink } = relatedPost;
-      elements.modalElements.modalTitle.textContent = title;
-      elements.modalElements.modalBody.textContent = description;
-      elements.modalElements.modalRef.href = postLink;
+      watchedState.modalContentId = dataId;
     }
   });
 };

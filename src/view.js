@@ -140,6 +140,15 @@ const renderForm = (dataProcess, elements, i18n) => {
   }
 };
 
+const renderModalContent = (state, elements) => {
+  const { modalContentId: id, posts } = state;
+  const relatedPost = posts.find((post) => post.postId === id);
+  const { title, description, postLink } = relatedPost;
+  elements.modalElements.modalTitle.textContent = title;
+  elements.modalElements.modalBody.textContent = description;
+  elements.modalElements.modalRef.href = postLink;
+};
+
 const initview = (state, elements, i18n) => {
   const mapping = {
     feeds: () => renderFeeds(state, elements, i18n),
@@ -148,6 +157,7 @@ const initview = (state, elements, i18n) => {
     'form.rssField': () => renderFormError(state, elements, i18n),
     dataProcess: () => renderForm(state.dataProcess, elements, i18n),
     'uiState.readPosts': () => renderPosts(state, elements, i18n),
+    modalContentId: () => renderModalContent(state, elements),
   };
 
   const watchedState = onChange(state, (path) => mapping[path]?.());
