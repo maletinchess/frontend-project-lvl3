@@ -31,7 +31,7 @@ export const validate = (url, urls, i18n) => {
   }
 };
 
-const normalizeUrl = (url) => {
+const addProxy = (url) => {
   const urlWithProxy = new URL('/get', 'https://hexlet-allorigins.herokuapp.com');
   urlWithProxy.searchParams.set('url', url);
   urlWithProxy.searchParams.set('disableCache', true);
@@ -39,8 +39,8 @@ const normalizeUrl = (url) => {
 };
 
 export const sendRequest = (url) => {
-  const normalizedUrl = normalizeUrl(url);
-  return axios.get(normalizedUrl).then((response) => {
+  const urlWithProxy = addProxy(url);
+  return axios.get(urlWithProxy).then((response) => {
     const { data } = response;
     return data.contents;
   });
@@ -58,7 +58,7 @@ const updatePosts = (state, receivedPosts, statePosts, id) => {
     const mappedNewPosts = newPosts.map(
       (newPost) => ({ ...newPost, id, postId: _.uniqueId() }),
     );
-    state.posts = [...mappedNewPosts, ...statePosts];
+    _.forEachRight(mappedNewPosts, (post) => state.posts.unshift(post));
   }
 };
 
@@ -83,7 +83,7 @@ export const addRss = (data, state, url) => {
   const mappedPosts = posts.map(
     (post) => ({ ...post, id, postId: _.uniqueId() }),
   );
-  state.posts = [...mappedPosts, ...state.posts];
+  _.forEachRight(mappedPosts, (post) => state.posts.unshift(post));
 
   autoUpdateRss(state, url, id);
 };
