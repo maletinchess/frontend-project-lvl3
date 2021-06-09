@@ -1,6 +1,8 @@
 import i18next from 'i18next';
 import initview from './view';
-import { sendRequest, addRss, validate } from './utils';
+import {
+  sendRequest, addRss, validate, getLoadingProcessErrorType,
+} from './utils';
 import parse from './parser';
 import resources from './locales';
 
@@ -75,12 +77,7 @@ const init = (i18n) => {
       })
       .catch((err) => {
         watchedState.dataProcess = 'failed';
-        if (err.isParsingError) {
-          watchedState.error = i18n.t('errorMessage.invalidRSS');
-        }
-        if (err.isAxiosError) {
-          watchedState.error = i18n.t('errorMessage.network');
-        }
+        watchedState.error = getLoadingProcessErrorType(err);
       });
   });
 

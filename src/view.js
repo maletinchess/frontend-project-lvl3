@@ -82,14 +82,14 @@ const renderPosts = (state, elements, i18n) => {
   postsHead.after(ul);
 };
 
-const renderAppError = (error, elements) => {
+const renderAppError = (error, elements, i18n) => {
   elements.feedback.innerHTML = '';
   if (error) {
-    elements.feedback.textContent = error;
+    elements.feedback.textContent = i18n.t(error);
   }
 };
 
-const renderFormError = (state, elements) => {
+const renderFormError = (state, elements, i18n) => {
   const { rssField } = state.form;
   if (rssField.valid) {
     elements.input.classList.remove('danger-text');
@@ -97,7 +97,7 @@ const renderFormError = (state, elements) => {
   } else {
     elements.input.classList.add('is-invalid');
     elements.feedback.classList.add('text-danger');
-    elements.feedback.textContent = rssField.error;
+    elements.feedback.textContent = i18n.t(rssField.error);
   }
 };
 
@@ -152,8 +152,8 @@ const initview = (state, elements, i18n) => {
   const mapping = {
     feeds: () => renderFeeds(state, elements, i18n),
     posts: () => renderPosts(state, elements, i18n),
-    error: () => renderAppError(state.error, elements),
-    'form.rssField': () => renderFormError(state, elements),
+    error: () => renderAppError(state.error, elements, i18n),
+    'form.rssField': () => renderFormError(state, elements, i18n),
     dataProcess: () => renderForm(state.dataProcess, elements, i18n),
     'uiState.readPosts': () => renderPosts(state, elements, i18n),
     modalContentId: () => renderModalContent(state, elements),

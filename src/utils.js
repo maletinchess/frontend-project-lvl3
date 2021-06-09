@@ -6,14 +6,26 @@ import { setLocale } from 'yup';
 import _ from 'lodash';
 import parse from './parser';
 
-export const validate = (url, urls, i18n) => {
+export const getLoadingProcessErrorType = (e) => {
+  if (e.isParsingError) {
+    return 'errorMessage.invalidRSS';
+  }
+
+  if (e.isAxiosError) {
+    return 'errorMessage.network';
+  }
+
+  return 'errorMessage.unknownError';
+};
+
+export const validate = (url, urls) => {
   setLocale({
     string: {
-      url: i18n.t('errorMessage.invalidUrl'),
+      url: 'errorMessage.invalidUrl',
     },
     mixed: {
-      required: i18n.t('errorMessage.emptyField'),
-      notOneOf: i18n.t('errorMessage.existedRss'),
+      required: 'errorMessage.emptyField',
+      notOneOf: 'errorMessage.existedRss',
     },
   });
   const schema = yup

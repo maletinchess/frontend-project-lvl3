@@ -7,6 +7,7 @@ export default {
       invalidRSS: 'Ресурс не содержит валидный RSS',
       emptyField: 'Не должно быть пустым',
       network: 'Ошибка сети',
+      unknownError: 'неизвестная ошибка',
     },
     view: 'Просмотр',
     postsHead: 'Посты',
