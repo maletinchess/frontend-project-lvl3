@@ -40,6 +40,9 @@ const renderFeeds = (state, elements, i18n) => {
 const renderPosts = (state, elements, i18n) => {
   elements.posts.innerHTML = '';
   const { posts } = state;
+  if (posts.length === 0) {
+    return;
+  }
   const postsHead = document.createElement('h2');
   postsHead.textContent = i18n.t('postsHead');
   elements.posts.append(postsHead);

@@ -58,44 +58,40 @@ export const sendRequest = (url) => {
   });
 };
 
-const updatePosts = (state, receivedPosts, statePosts, id) => {
-  const mappedStatePosts = statePosts.map((post) => ({
-    title: post.title,
-    description: post.description,
-    postLink: post.postLink,
-  }));
+export const fetchNewPosts = (state) => {
+  const { feeds, posts: statePosts } = state;
+  const fetchingTime = 5000;
+  const promises = feeds.map(
+    (feed) => sendRequest(feed.url).then((responseData) => ({ id: feed.id, responseData })),
+  );
+  const promise = Promise.all(promises);
 
-  const newPosts = _.differenceWith(receivedPosts, mappedStatePosts, _.isEqual);
-  if (newPosts.length > 0) {
-    const mappedNewPosts = newPosts.map(
-      (newPost) => ({ ...newPost, id, postId: _.uniqueId() }),
-    );
-    _.forEachRight(mappedNewPosts, (post) => state.posts.unshift(post));
-  }
-};
-
-const autoUpdateRss = (state, url, id) => {
-  sendRequest(url)
-    .then((xml) => {
-      const data = parse(xml);
-      const { posts: receivedPosts } = data;
-      const { posts: statePosts } = state;
-      updatePosts(state, receivedPosts, statePosts, id);
+  promise
+    .then((responses) => responses.flatMap((item) => {
+      const { id, responseData } = item;
+      const parsedItems = parse(responseData);
+      const { posts: receivedPosts } = parsedItems;
+      const postsWithFeedId = receivedPosts.map((post) => ({ ...post, id }));
+      return postsWithFeedId;
+    }))
+    .then((posts) => {
+      const newPosts = _.differenceBy(posts, statePosts, 'title');
+      const newPostsWithPostId = newPosts.map((item) => ({ ...item, postId: _.uniqueId() }));
+      state.posts = newPostsWithPostId.concat(statePosts);
     });
 
-  setTimeout(() => autoUpdateRss(state, url, id), 5000);
+  setTimeout(() => fetchNewPosts(state), fetchingTime);
 };
 
 export const addRss = (data, state, url) => {
-  const { feed, posts } = data;
-  const id = state.savedUrls.length;
+  const { feeds: stateFeeds, posts: statePosts } = state;
+  const { feed, posts: receivedPosts } = data;
+  const id = _.uniqueId();
   const newFeed = { ...feed, id, url };
-  state.feeds = [newFeed, ...state.feeds];
+  state.feeds = [newFeed, ...stateFeeds];
 
-  const mappedPosts = posts.map(
+  const mappedPosts = receivedPosts.map(
     (post) => ({ ...post, id, postId: _.uniqueId() }),
   );
-  _.forEachRight(mappedPosts, (post) => state.posts.unshift(post));
-
-  autoUpdateRss(state, url, id);
+  state.posts = mappedPosts.concat(statePosts);
 };

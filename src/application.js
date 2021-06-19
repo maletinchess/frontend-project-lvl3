@@ -1,7 +1,7 @@
 import i18next from 'i18next';
 import initview from './view';
 import {
-  sendRequest, addRss, validate, getLoadingProcessErrorType,
+  sendRequest, addRss, validate, getLoadingProcessErrorType, fetchNewPosts,
 } from './utils';
 import parse from './parser';
 import resources from './locales';
@@ -82,19 +82,16 @@ const init = (i18n) => {
   });
 
   elements.posts.addEventListener('click', (e) => {
-    const choosedElem = e.target;
-    if (choosedElem.hasAttribute('data-id')) {
-      const dataId = choosedElem.dataset.id;
-      watchedState.uiState.readPosts.add(dataId);
+    if (!('id' in e.target.dataset)) {
+      return;
     }
 
-    if (choosedElem.hasAttribute('data-id')
-    && choosedElem.hasAttribute('data-bs-toggle')) {
-      const dataId = choosedElem.dataset.id;
-      watchedState.uiState.readPosts.add(dataId);
-      watchedState.modalContentId = dataId;
-    }
+    const { id } = e.target.dataset;
+    watchedState.uiState.readPosts.add(id);
+    watchedState.modalContentId = id;
   });
+
+  fetchNewPosts(watchedState);
 };
 
 const runApp = () => {
