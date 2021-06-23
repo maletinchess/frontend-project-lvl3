@@ -24,10 +24,8 @@ const init = (i18n) => {
 
   const state = {
     form: {
-      rssField: {
-        valid: true,
-        error: null,
-      },
+      status: 'filling',
+      error: null,
     },
     modalContentId: null,
     posts: [],
@@ -53,15 +51,15 @@ const init = (i18n) => {
     const error = validate(url, urls, i18n);
 
     if (error) {
-      watchedState.form.rssField = {
-        valid: false,
+      watchedState.form = {
+        status: 'failed',
         error,
       };
       return;
     }
 
-    watchedState.form.rssField = {
-      valid: true,
+    watchedState.form = {
+      status: 'filling',
       error: null,
     };
 

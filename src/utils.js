@@ -78,9 +78,8 @@ export const fetchNewPosts = (state) => {
       const newPosts = _.differenceBy(posts, statePosts, 'title');
       const newPostsWithPostId = newPosts.map((item) => ({ ...item, postId: _.uniqueId() }));
       state.posts = newPostsWithPostId.concat(statePosts);
-    });
-
-  setTimeout(() => fetchNewPosts(state), fetchingTime);
+    })
+    .then(() => setTimeout(() => fetchNewPosts(state), fetchingTime));
 };
 
 export const addRss = (data, state, url) => {
