@@ -94,19 +94,14 @@ const renderAppError = (error, elements, i18n) => {
 
 const renderFormError = (state, elements, i18n) => {
   const { form } = state;
-  const { status } = form;
-  const mappingForm = {
-    filling: () => {
-      elements.input.classList.remove('danger-text');
-      elements.input.classList.remove('is-invalid');
-    },
-    failed: () => {
-      elements.input.classList.add('is-invalid');
-      elements.feedback.classList.add('text-danger');
-      elements.feedback.textContent = i18n.t(form.error);
-    },
-  };
-  mappingForm[status]();
+  if (form.valid) {
+    elements.input.classList.remove('danger-text');
+    elements.input.classList.remove('is-invalid');
+  } else {
+    elements.input.classList.add('is-invalid');
+    elements.feedback.classList.add('text-danger');
+    elements.feedback.textContent = i18n.t(form.error);
+  }
 };
 
 const renderForm = (dataProcess, elements, i18n) => {

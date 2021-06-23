@@ -24,7 +24,7 @@ const init = (i18n) => {
 
   const state = {
     form: {
-      status: 'filling',
+      valid: false,
       error: null,
     },
     modalContentId: null,
@@ -52,14 +52,14 @@ const init = (i18n) => {
 
     if (error) {
       watchedState.form = {
-        status: 'failed',
+        valid: false,
         error,
       };
       return;
     }
 
     watchedState.form = {
-      status: 'filling',
+      valid: true,
       error: null,
     };
 
